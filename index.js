@@ -22,7 +22,7 @@ const data = months.map(m => ({
 }))
 
 const $chartContainer = $root.append('g')
-    .classed('.mz-chart__container', true)
+    .classed('mz-chart__container', true)
     .attr('transform', `translate(${padding}, ${100})`);
 
 const height = 500;
@@ -40,3 +40,17 @@ $chartContainer.selectAll('.mz-chart__bar').data(data).enter()
     .attr('height', (d, i) => yScale(d.value))
     .attr('width', (d, i) => xScale.bandwidth())
     .attr('fill', d => colorScale(d.value));
+
+const $chartLabels = $root.append('g')
+    .classed('mz-chart__labels', true)
+    .attr('transform', `translate(${padding}, ${height + 100 + padding / 2})`)
+    .attr('text-anchor','middle')
+
+$chartLabels.selectAll('.mz-chart__label').data(data).enter()
+    .append('g')
+    .classed('mz-chart__label', true)
+    .attr('transform', d => `translate(${xScale(d.label) + xScale.bandwidth() / 2}, 0)`)
+    .append('text')
+    .text(d => d.label)
+
+
