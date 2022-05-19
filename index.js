@@ -85,3 +85,35 @@ $chartLabels.selectAll('.mz-chart__label').data(data).enter()
     .attr('transform', d => `translate(${xScale(d.label) + xScale.bandwidth() / 2}, 0)`)
     .append('text')
     .text(d => d.label)
+
+const updateData = () => {
+    const data = months.map(m => ({
+        label: m,
+        value: randomValue()
+    }))
+    $chartContainer.selectAll('.mz-chart__bar rect').data(data)
+        .style('transition', 'all 2s ease-in')
+        .attr('y', (d, i) => height - yScale(d.value))
+        .attr('height', (d, i) => yScale(d.value))
+        .attr('fill', d => colorScale(d.value));
+}
+
+const $btn = $root.append('g')
+    .classed('mz-chart__btn', true)
+    .attr('transform', `translate(${W - 130 - padding}, ${height + 110 + padding / 2})`)
+    .on('click', updateData)
+
+$btn
+    .append('rect')
+    .classed('mz-chart__btn-bg', true)
+    .attr('height', '25')
+    .attr('width', '130')
+    .attr('fill', 'black');
+
+$btn
+    .append('g')
+    .style('cursor', 'pointer')
+    .attr('transform', 'translate(27, 17)')
+    .append('text')
+    .text('Обновить')
+    .attr('fill', '#ffffff');
