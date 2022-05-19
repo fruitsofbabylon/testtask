@@ -96,6 +96,15 @@ const updateData = () => {
         .attr('y', (d, i) => height - yScale(d.value))
         .attr('height', (d, i) => yScale(d.value))
         .attr('fill', d => colorScale(d.value));
+    
+    $chartContainer.select('.mz-chart__med')
+        .datum(calcMed(data))
+        .attr('y1', d => height - yScale(d))
+        .attr('y2', d => height - yScale(d));
+    $chartContainer.select('.mz-chart__med-num')
+        .datum(calcMed(data))
+        .attr('transform', d => `translate(${width}, ${height - yScale(d) - 10})`)
+        .html(d => d);
 }
 
 const $btn = $root.append('g')
@@ -117,3 +126,25 @@ $btn
     .append('text')
     .text('Обновить')
     .attr('fill', '#ffffff');
+
+const calcMed = (data) => {
+    const values = data.map(d => d.value);
+    values.sort();
+    return (values[5] + values[6]) / 2;
+};
+
+$chartContainer.append('line')
+    .datum(calcMed(data))
+    .attr('class', 'mz-chart__med')
+    .attr('x1', - 15)
+    .attr('y1', d => height - yScale(d))
+    .attr('x2', width + 15)
+    .attr('y2', d => height - yScale(d));
+
+$chartContainer.append('text')
+    .datum(calcMed(data))
+    .attr('class', 'mz-chart__med-num')
+    .attr('transform', d => `translate(${width}, ${height - yScale(d) - 10})`)
+    .attr('text-anchor', 'end')
+    .style('fill', 'red')
+    .html(d => d);
