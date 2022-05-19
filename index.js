@@ -92,7 +92,7 @@ const updateData = () => {
         value: randomValue()
     }))
     $chartContainer.selectAll('.mz-chart__bar rect').data(data)
-        .style('transition', 'all 2s ease-in')
+        .style('transition', 'all .5s ease-in')
         .attr('y', (d, i) => height - yScale(d.value))
         .attr('height', (d, i) => yScale(d.value))
         .attr('fill', d => colorScale(d.value));
